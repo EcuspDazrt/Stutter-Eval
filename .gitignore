@@ -1,0 +1,6 @@
+datasets
+.env
+.idea
+.venv
+*.xml
+*.pyc
