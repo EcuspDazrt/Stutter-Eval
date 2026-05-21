@@ -1,6 +1,5 @@
-from definition import StutterAnomalyLSTM
+from model.definition import StutterAnomalyLSTM
 from util.dataset import SpeechDataset
-from util.paths import MODEL_WEIGHTS_PATH
 
 import torch
 import torch.nn as nn
@@ -29,7 +28,7 @@ def train_model():
         loss.backward()
         optimizer.step()
 
-    torch.save(model.state_dict(), MODEL_WEIGHTS_PATH)
+    torch.save(model.state_dict(), p.MODEL_WEIGHTS_PATH)
 
 if __name__ == '__main__':
     train_model()

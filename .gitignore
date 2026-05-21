@@ -4,3 +4,5 @@ datasets
 .venv
 *.xml
 *.pyc
+*.png
+*.m4a

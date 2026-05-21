@@ -2,8 +2,8 @@ from pathlib import Path
 import glob
 
 # <---------- Path variables ---------->
-BASE_DIR = Path(__file__).parent
-DATASETS_DIR = BASE_DIR.parent / 'datasets'
+BASE_DIR = Path(__file__).parent.parent
+DATASETS_DIR = BASE_DIR / 'datasets'
 
 PROCESSED_DIR = DATASETS_DIR / 'processed'
 RAW_COMMONVOICE_DIR = DATASETS_DIR / 'raw' / 'commonvoice'
@@ -11,6 +11,9 @@ RAW_LIBROSA_DIR = DATASETS_DIR / 'raw' / 'librosa'
 ARTIFACTS_DIR = DATASETS_DIR / 'artifacts'
 
 MODEL_WEIGHTS_PATH = ARTIFACTS_DIR / 'LSTM_weights.pt'
+THRESHOLDS_PATH = ARTIFACTS_DIR / 'thresholds.json'
+
+TEST_PATH = BASE_DIR / 'test' / 'Stutter_Eval_3.m4a'
 
 
 
