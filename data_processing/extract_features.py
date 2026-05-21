@@ -6,6 +6,18 @@ from tqdm import tqdm
 
 SR = 16000 # samples per second
 
+def get_audio_array(file_path):
+    audio_array, sr = librosa.load(file_path, sr=16000)
+
+    sample = {
+        'audio': {
+            'array': audio_array,
+            'sampling_rate': sr,
+        }
+    }
+
+    return sample
+
 def extract_features(sample):
     audio_array = sample["audio"]["array"]
     original_sr = sample["audio"]["sampling_rate"]
@@ -25,15 +37,8 @@ def extract_commonvoice_split(df):
     features = []
     for _, row in df.iterrows():
         mp3_path = str(p.RAW_COMMONVOICE_DIR / 'en' / 'clips' / row['path'])
-        audio_array, sr = librosa.load(mp3_path, sr=16000)
-        sample = {'audio':
-            {
-                'array': audio_array,
-                'sampling_rate': sr,
-            }
-        }
-
-        features.append(extract_features(sample))
+        audio_arr = get_audio_array(mp3_path)
+        features.append(extract_features(audio_arr))
 
     return features
 
@@ -60,16 +65,8 @@ def extract_librispeech_split(raw_dir):
 
         for _, row in tqdm(df.iterrows(), total=len(df), desc=f'{raw_dir.name} process', leave=False):
             audio_bytes = row["audio"]["bytes"]
-            audio_array, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
-
-            sample = {
-                "audio": {
-                    "array": audio_array,
-                    "sampling_rate": sr
-                }
-            }
-
-            features.append(extract_features(sample))
+            audio_arr = get_audio_array(io.BytesIO(audio_bytes))
+            features.append(extract_features(audio_arr))
 
     return features
 
