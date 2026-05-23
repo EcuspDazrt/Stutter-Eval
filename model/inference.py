@@ -1,18 +1,21 @@
 import torch
 
 from model.compute_anomalies import compute_anomaly_scores, smooth_deviations
+from util.normalizer import load_normalizer, normalize
 
 
-def infer(clip, model): # clip is in the form (n_frames, features)
+def infer(clip, model):
+    mean, std = load_normalizer()
     model.eval()
 
-    clip = clip.T
+    clip = clip.T                     # (39, n_frames) -> (n_frames, 39)
+    clip = normalize(clip, mean, std) # (n_frames, 39)
 
     predicted_frames = []
     actual_frames = []
     with torch.no_grad():
-        for i in range(10, len(clip)):
-            window = clip[i-10:i]
+        for i in range(9, len(clip)):
+            window = clip[i-9:i]
             window = torch.tensor(window, dtype=torch.float32).unsqueeze(0)
 
             prediction = model(window)
