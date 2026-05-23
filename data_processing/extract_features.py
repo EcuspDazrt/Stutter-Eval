@@ -20,11 +20,6 @@ def get_audio_array(file_path):
 
 def extract_features(sample):
     audio_array = sample["audio"]["array"]
-    original_sr = sample["audio"]["sampling_rate"]
-
-    # ensure audio is at 16kHz
-    if original_sr != SR:
-        audio_array = librosa.resample(audio_array, orig_sr=original_sr, target_sr=SR)
 
     mfcc = librosa.feature.mfcc(y=audio_array, sr=SR, n_mfcc=13)
     delta = librosa.feature.delta(mfcc)
@@ -72,7 +67,7 @@ def extract_librispeech_split(raw_dir):
 
 def extract_librispeech():
     print('Extracting Librispeech...')
-    source_dir = p.RAW_LIBROSA_DIR / 'clean'
+    source_dir = p.RAW_LIBRISPEECH_DIR / 'clean'
 
     train_100_dir = source_dir / 'train.100'
     train_100_features = extract_librispeech_split(train_100_dir)
@@ -92,18 +87,16 @@ def extract_librispeech():
     return train_features, validation_features, test_features
 
 def save_features(path, features):
-    arr = np.empty(len(features), dtype=object)
-    for i, item in enumerate(features):
-        arr[i] = item
-    np.save(path, arr)
+    for i, clip in enumerate(features):
+        np.save(path / f'{i}.npy', clip)
 
 def process_features(exclude_commonvoice=False):
     lib_train, lib_validation, lib_test = extract_librispeech()
 
     if exclude_commonvoice:
-        save_features(p.PROCESSED_DIR / 'train.npy', lib_train)
-        save_features(p.PROCESSED_DIR / 'test.npy', lib_test)
-        save_features(p.PROCESSED_DIR / 'validation.npy', lib_validation)
+        save_features(p.TRAIN_FEATURES_DIR, lib_train)
+        save_features(p.TEST_FEATURES_DIR, lib_test)
+        save_features(p.VALIDATION_FEATURES_DIR, lib_validation)
         return
 
     com_train, com_validation, com_test = extract_commonvoice()
@@ -112,9 +105,9 @@ def process_features(exclude_commonvoice=False):
     validation_features = lib_validation + com_validation
     test_features = lib_test + com_test
 
-    save_features(p.PROCESSED_DIR / 'train.npy', train_features)
-    save_features(p.PROCESSED_DIR / 'test.npy', test_features)
-    save_features(p.PROCESSED_DIR / 'validation.npy', validation_features)
+    save_features(p.TRAIN_FEATURES_DIR, train_features)
+    save_features(p.TEST_FEATURES_DIR, test_features)
+    save_features(p.VALIDATION_FEATURES_DIR, validation_features)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ def download_librispeech():
     snapshot_download(
         repo_id="openslr/librispeech_asr",
         repo_type="dataset",
-        local_dir=p.RAW_LIBROSA_DIR,
+        local_dir=p.RAW_LIBRISPEECH_DIR,
         allow_patterns="clean/*",
         token=TOKEN,
     )
