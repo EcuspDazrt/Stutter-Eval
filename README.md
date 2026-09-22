@@ -21,7 +21,7 @@ The system is an **anomaly detector**, not a classifier. It is trained on fluent
         │
         ▼
   LSTM Training
-  Predict frame t from frames t-10…t-1, MSE loss
+  Predict frame t from frames t-9…t-1, MSE loss
         │
         ▼
   Threshold Calibration
@@ -120,7 +120,8 @@ MOZILLA_API_KEY=your_key_here      # only needed for CommonVoice (see Roadmap)
 
 ---
 
-## Usage
+## Usage 
+*(1-4 are only for reproducibility. The artifacts that come from them are already committed.)*
 
 ### 1. Download and process data
 
@@ -156,7 +157,7 @@ Runs inference over the validation set and saves the 95th-percentile reconstruct
 
 ### 5. Test on an audio file
 
-Place a `.m4a` file at `test/Stutter_Eval_3.m4a` (or update `TEST_PATH` in `paths.py`), then:
+Place a `.m4a` file at `test/stutter_eval.m4a` (or update `TEST_PATH` in `paths.py`), then:
 
 ```bash
 python evaluation/test_model.py
@@ -179,7 +180,7 @@ Saves `anomalies.png`, a four-panel plot showing the waveform and MFCC/delta/del
 | Loss        | MSE (next-frame prediction)    |
 | Optimiser   | Adam, lr=1e-3                  |
 
-The model is trained to predict frame `t` given frames `t-10 … t-1`. At inference, the mean squared error between predicted and actual frames is computed separately for each feature group (MFCC, Δ, ΔΔ).
+The model is trained to predict frame `t` given frames `t-9 … t-1`. At inference, the mean squared error between predicted and actual frames is computed separately for each feature group (MFCC, Δ, ΔΔ).
 
 ---
 

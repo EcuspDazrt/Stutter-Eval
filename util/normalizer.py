@@ -33,5 +33,5 @@ def normalize(features, mean, std):
     return (features - mean) / (std + 1e-8)
 
 if __name__ == "__main__":
-    mean, std = compute_normalizer(p.ARTIFACTS_DIR)
+    mean, std = compute_normalizer(p.TRAIN_FEATURES_DIR)
     save_normalizer(mean, std)

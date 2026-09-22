@@ -16,7 +16,7 @@ ARTIFACTS_DIR = DATASETS_DIR / 'artifacts'
 MODEL_WEIGHTS_PATH = ARTIFACTS_DIR / 'LSTM_weights100.pt'
 THRESHOLDS_PATH = ARTIFACTS_DIR / 'thresholds.json'
 
-TEST_PATH = BASE_DIR / 'test' / 'Stutter_Eval_3.m4a'
+TEST_PATH = BASE_DIR / 'test' / 'stutter_eval.m4a'
 
 ALL_DIRS = [
     DATASETS_DIR,
